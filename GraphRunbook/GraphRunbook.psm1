@@ -97,4 +97,18 @@ function Show-GraphRunbookActivityTraces(
     }
 }
 
-Export-ModuleMember -Function Show-GraphRunbookActivityTraces
+function Enable-GraphRunbookActivityTraces(
+    [Parameter(Mandatory = $true)]
+    [string]
+    $ResourceGroupName,
+
+    [Parameter(Mandatory = $true)]
+    [string]
+    $AutomationAccountName,
+
+    [Parameter(Mandatory = $true)]
+    [string]
+    $JobId
+)
+{
+}
