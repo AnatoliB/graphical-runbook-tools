@@ -1039,7 +1039,9 @@ Microsoft Azure Automation Graphical Authoring SDK: https://www.microsoft.com/en
 function Invoke-GraphRunbookObject(
     [Orchestrator.GraphRunbook.Model.GraphRunbook]$Runbook) {
     $Translator = New-Object Orchestrator.GraphRunbook.Translator.PowerShellTranslator
-    $Translator.TranslateGraphRunbookToScript($Runbook)
+    $TranslatedRunbook = $Translator.TranslateGraphRunbookToScript($Runbook)
+    Import-Module 'C:\Program Files (x86)\Microsoft Azure Automation Graphical Authoring SDK\Orchestrator.GraphRunbook.Cmdlets'
+    $TranslatedRunbook | Invoke-Expression
 }
 
 function Invoke-GraphRunbookFile(
