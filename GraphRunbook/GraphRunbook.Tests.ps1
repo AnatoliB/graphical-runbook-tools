@@ -1272,4 +1272,21 @@ Activities = @(
             }
         }
     }
+
+    Describe "Invoke-GraphRunbook" {
+        Context "When .graphrunbook file name is provided" {
+            $Runbook = New-Object Orchestrator.GraphRunbook.Model.GraphRunbook
+            $Activity = New-Object Orchestrator.GraphRunbook.Model.WorkflowScriptActivity -ArgumentList 'My activity'
+            $Activity.Process = "'Hello'"
+            $Runbook.AddActivity($Activity)
+            
+            WithRunbookFile -Runbook $Runbook -Action {
+                param($File)
+
+                It "Invokes the runbook locally" {
+                    Invoke-GraphRunbook -RunbookFileName $File | Should be 'Hello'
+                }
+            }
+        }
+    }
 }
