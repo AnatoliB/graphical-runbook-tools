@@ -1026,6 +1026,65 @@ Microsoft Azure Automation Graphical Authoring SDK: https://www.microsoft.com/en
 
 #endregion
 
+#region Invoke-GraphRunbook
+
+function Invoke-GraphRunbook {
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = 'ByGraphRunbook')]
+        # Should be [Orchestrator.GraphRunbook.Model.GraphRunbook], but declaring this type here would require
+        # the Model assembly to be pre-loaded even before accessing module metadata
+        $Runbook,
+
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = 'ByRunbookFileName')]
+        [string]
+        $RunbookFileName,
+
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
+            ParameterSetName = 'ByRunbookName')]
+        [Alias('Name')]
+        [string]
+        $RunbookName,
+
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
+            ParameterSetName = 'ByRunbookName')]
+        [string]
+        $ResourceGroupName,
+
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
+            ParameterSetName = 'ByRunbookName')]
+        [string]
+        $AutomationAccountName,
+
+        [Parameter(
+            ParameterSetName = 'ByRunbookName')]
+        [ValidateSet('Published', 'Draft')]
+        [string]
+        $Slot = 'Published',
+
+        [string]
+        $GraphicalAuthoringSdkDirectory
+    )
+
+    'Hello'
+}
+
+#endregion
+
 Export-ModuleMember -Function Show-GraphRunbookActivityTraces
 Export-ModuleMember -Function Convert-GraphRunbookToPowerShellData
 Export-ModuleMember -Function Get-GraphRunbookDependency
+Export-ModuleMember -Function Invoke-GraphRunbook
