@@ -1028,6 +1028,18 @@ Microsoft Azure Automation Graphical Authoring SDK: https://www.microsoft.com/en
 
 #region Invoke-GraphRunbook
 
+function Invoke-GraphRunbookObject {
+    'Hello'
+}
+
+function Invoke-GraphRunbookFile(
+    [string]$RunbookFileName) {
+
+    Write-Verbose "Inspecting runbook file $RunbookFileName"
+    $Runbook = Get-GraphRunbookFromFile -FileName $RunbookFileName
+    Invoke-GraphRunbookObject -Runbook $Runbook
+}
+
 function Invoke-GraphRunbook {
     [CmdletBinding()]
     param(
@@ -1079,7 +1091,22 @@ function Invoke-GraphRunbook {
         $GraphicalAuthoringSdkDirectory
     )
 
-    'Hello'
+
+    begin {
+        Add-GraphRunbookModelAssembly $GraphicalAuthoringSdkDirectory
+    }
+
+    process {
+        switch ($PSCmdlet.ParameterSetName) {
+            'ByGraphRunbook' {
+                Invoke-GraphRunbookObject $Runbook -ErrorAction Stop
+            }
+
+            'ByRunbookFileName' {
+                Invoke-GraphRunbookFile $RunbookFileName -ErrorAction Stop
+            }
+        }
+    }
 }
 
 #endregion
