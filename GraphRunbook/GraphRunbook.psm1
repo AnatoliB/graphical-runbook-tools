@@ -513,11 +513,19 @@ function Get-GraphicalAuthoringSdkDirectoryFromRegistry {
 }
 
 function Add-GraphRunbookModelAssembly($GraphicalAuthoringSdkDirectory) {
+    Add-GraphRunbookAuthoringSdkAssembly $GraphicalAuthoringSdkDirectory 'Orchestrator.GraphRunbook.Model.dll'
+}
+
+function Add-GraphRunbookTranslatorAssembly($GraphicalAuthoringSdkDirectory) {
+    Add-GraphRunbookAuthoringSdkAssembly $GraphicalAuthoringSdkDirectory 'Orchestrator.GraphRunbook.Translator.dll'
+}
+
+function Add-GraphRunbookAuthoringSdkAssembly($GraphicalAuthoringSdkDirectory, $AssemblyName) {
     if (-not $GraphicalAuthoringSdkDirectory) {
         $GraphicalAuthoringSdkDirectory = Get-GraphicalAuthoringSdkDirectoryFromRegistry
     }
 
-    $ModelAssemblyPath = Join-Path $GraphicalAuthoringSdkDirectory 'Orchestrator.GraphRunbook.Model.dll'
+    $ModelAssemblyPath = Join-Path $GraphicalAuthoringSdkDirectory $AssemblyName
 
     if (Test-Path $ModelAssemblyPath -PathType Leaf) {
         Add-Type -Path $ModelAssemblyPath
@@ -1035,7 +1043,7 @@ function Invoke-GraphRunbookObject {
 function Invoke-GraphRunbookFile(
     [string]$RunbookFileName) {
 
-    Write-Verbose "Inspecting runbook file $RunbookFileName"
+    Write-Verbose "Invoking runbook from file $RunbookFileName"
     $Runbook = Get-GraphRunbookFromFile -FileName $RunbookFileName
     Invoke-GraphRunbookObject -Runbook $Runbook
 }
@@ -1094,6 +1102,7 @@ function Invoke-GraphRunbook {
 
     begin {
         Add-GraphRunbookModelAssembly $GraphicalAuthoringSdkDirectory
+        Add-GraphRunbookTranslatorAssembly $GraphicalAuthoringSdkDirectory
     }
 
     process {
