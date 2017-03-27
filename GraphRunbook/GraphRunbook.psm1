@@ -535,13 +535,13 @@ function Add-GraphRunbookAuthoringSdkAssembly($GraphicalAuthoringSdkDirectory, $
         $GraphicalAuthoringSdkDirectory = Get-GraphicalAuthoringSdkDirectoryFromRegistry
     }
 
-    $ModelAssemblyPath = Join-Path $GraphicalAuthoringSdkDirectory $AssemblyName
+    $AssemblyPath = Join-Path $GraphicalAuthoringSdkDirectory $AssemblyName
 
-    if (Test-Path $ModelAssemblyPath -PathType Leaf) {
-        Add-Type -Path $ModelAssemblyPath
+    if (Test-Path $AssemblyPath -PathType Leaf) {
+        Add-Type -Path $AssemblyPath
     }
     else {
-        Write-Warning ("Assembly not found: $ModelAssemblyPath. Install Microsoft Azure Automation Graphical Authoring SDK " +
+        Write-Warning ("Assembly not found: $AssemblyPath. Install Microsoft Azure Automation Graphical Authoring SDK " +
             "(https://www.microsoft.com/en-us/download/details.aspx?id=50734) and provide the installation directory path " +
             "in the GraphicalAuthoringSdkDirectory parameter.")
     }
